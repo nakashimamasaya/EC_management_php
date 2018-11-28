@@ -55,12 +55,12 @@ class AppController extends Controller
                 ]
             ],
             'loginAction' => [
-                'controller' => 'Users',
+                'controller' => 'Managements',
                 'action' => 'login'
             ],
             'loginRedirect' => [
                 'controller' => 'Products',
-                'action' => 'index'
+                'action' => 'managements'
             ]
         ]);
 
