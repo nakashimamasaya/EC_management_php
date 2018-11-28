@@ -12,27 +12,10 @@ use App\Controller\AppController;
  */
 class PurchasesController extends AppController
 {
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => [
-                'Users',
-                'Carts' =>[
-                    'Products'
-                ]],
-            'order' => [
-                'id' => 'desc'
-            ]
-        ];
-        $purchases = $this->paginate($this->Purchases->find()->where(['user_id' => $this->Auth->user()['id'], 'Purchases.level' => 1]));
-
-        $this->set(compact('purchases'));
-    }
-
      public function managements(){
         if($this->Auth->user()['level'] != 2){
                 $this->Flash->error('権限がありません。');
-                return $this->redirect(['controller' => 'Products', 'action' => 'index']);
+                return $this->redirect(['controller' => 'Products', 'action' => 'managements']);
         }
         $this->paginate = [
             'contain' => ['Users'],
@@ -90,7 +73,7 @@ class PurchasesController extends AppController
                 }
                 return $this->redirect(['controller' => 'Products', 'action' => 'index']);
             }
-            if($type == 2){
+            if($type == 2 && $purchase->level == 1){
                 $purchase->level = 2;
                 $purchase->purchaseDate = date('Y-m-d H:i:s');
                 if ($this->Purchases->save($purchase)) {
@@ -99,7 +82,7 @@ class PurchasesController extends AppController
                 }
                 return $this->redirect(['controller' => 'Products', 'action' => 'index']);
             }
-            $this->Flash->error(__('The purchase could not be saved. Please, try again.'));
+            $this->Flash->error(__('エラーが発生しました'));
         }
         $users = $this->Purchases->Users->find('list', ['limit' => 200]);
         $this->set(compact('purchase', 'users'));

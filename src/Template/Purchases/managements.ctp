@@ -25,7 +25,9 @@
                 <td><?= $purchase->has('user') ? $this->Html->link($purchase->user->id, ['controller' => 'Users', 'action' => 'view', $purchase->user->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('詳細'), ['action' => 'view', $purchase->id]) ?>
-                    <?= $this->Form->postLink(__('返金'), ['action' => 'edit', $purchase->id, 2], ['confirm' => '返金してよろしいですか？']) ?>
+                    <?php if($purchase->level == 1): ?>
+                        <?= $this->Form->postLink(__('返金'), ['action' => 'edit', $purchase->id, 2], ['confirm' => '返金してよろしいですか？']) ?>
+                    <?php endif ?>
                 </td>
             </tr>
             <?php endforeach; ?>

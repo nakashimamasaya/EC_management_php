@@ -45,14 +45,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <div class="top-bar-section">
             <ul class="right">
                 <?php if(isset($current_user)): ?>
-                    <li><?=$this->Html->link('商品一覧',['controller' => 'Products', 'action' => 'index'])?></li>
-                    <li><?=$this->Html->link('商品検索',['controller' => 'Products', 'action' => 'find'])?></li>
-                    <li><?=$this->Html->link('カート',['controller' => 'Carts', 'action' => 'index'])?></li>
-                    <li><?=$this->Html->link('購入履歴',['controller' => 'Purchases', 'action' => 'index'])?></li>
+                    <li> <?= $this->Form->postLink(__('ユーザー編集'), ['controller' => 'Users', 'action' => 'view', $current_user['id']]) ?></li>
                     <li> <?= $this->Form->postLink(__('退会'), ['controller' => 'Users', 'action' => 'delete', $current_user['id']], ['confirm' => __('退会しますか？')]) ?></li>
                     <li><?=$this->Html->link('ログアウト',['controller' => 'Users', 'action' => 'logout'])?></li>
                 <?php else: ?>
-                    <li><?=$this->Html->link('ログイン',['controller' => 'Users', 'action' => 'login'])?></li>
+                    <li><?=$this->Html->link('ログイン',['controller' => 'Managements', 'action' => 'login'])?></li>
                     <li><?=$this->Html->link('新規登録',['controller' => 'Users', 'action' => 'signup'])?></li>
                 <?php endif ?>
             </ul>
@@ -66,11 +63,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <?= $this->fetch('content') ?>
     </div>
     <footer>
-        <ul class="left" style="list-style: none;">
-            <?php if(!isset($current_user)): ?>
-                <li><?=$this->Html->link('管理ページログイン',['controller' => 'Managements', 'action' => 'login'])?></li>
-            <?php endif ?>
-        </ul>
     </footer>
 </body>
 </html>

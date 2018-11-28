@@ -36,12 +36,16 @@
                 'type' => 'password',
                 'label' => 'パスワード（確認）'
             ]);
-            if($current_user['level'] == 2){
+            if($current_user['level'] == 2 && $current_user['id'] != $user['id']){
                 echo '<p>ユーザーレベル</p>';
                 echo $this->Form->select('level',
-                    [0 => '一般ユーザ', 1 => '出品者ユーザ', 2 => 'adminユーザ'],
+                    [1 => '出品者ユーザ', 2 => 'adminユーザ'],
                     []
                 );
+            }else{
+                echo $this->Form->control('level',[
+                    'type' => 'hidden'
+                ]);
             }
         ?>
     </fieldset>
