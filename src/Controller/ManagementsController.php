@@ -23,7 +23,7 @@ class ManagementsController extends AppController
                 if ($user && $user['level'] > 0) {
                     $this->Auth->setUser($user);
                     $this->Flash->success(__('管理ページにログインしました'));
-                    return $this->redirect(['controller'=>'Products','action'=>'managements']);
+                    return $this->redirect($this->Auth->redirectUrl());
                 }
                 $this->Flash->error(__('ログインできませんでした'));
             }
