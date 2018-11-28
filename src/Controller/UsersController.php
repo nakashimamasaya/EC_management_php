@@ -30,7 +30,8 @@ class UsersController extends AppController
     public function index()
     {
         $users = $this->paginate($this->Users);
-        $this->set(compact('users'));
+        $current_user = $this->Auth->user();
+        $this->set(compact('users', 'current_user'));
     }
 
     public function view($id = null)
@@ -39,30 +40,15 @@ class UsersController extends AppController
             $user = $this->Users->get($id, [
                 'contain' => []
             ]);
-            $this->set('user', $user);
+            $current_user = $this->Auth->user();
+            if($current_user->level != 2 && $id != $current_user['id']){
+                $this->Flash->error('権限がありません');
+                return $this->redirect(['controller'=>'Products','action'=>'managements']);
+            }
+            $this->set(compact('user', 'current_user'));
         }catch(RecordNotFoundException $e){
             $this->Flash->error('ユーザが存在しません。');
-            $this->redirect(['controller'=>'Products','action'=>'index']);
-        }
-    }
-
-    public function login(){
-        $this->loadModel('Purchases');
-        if ($this->request->is('post')){
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-                $this->Flash->success(__('ログインしました'));
-                $purchase = $this->Purchases->find('all')->where(['user_id' => $this->Auth->user()['id']])->last();
-                if(!isset($purchase)){
-                    $purchase = $this->Purchases->newEntity();
-                    $purchase->level = 0;
-                    $purchase->user_id = $this->Auth->user()['id'];
-                    $this->Purchases->save($purchase);
-                }
-                return $this->redirect($this->Auth->redirectUrl());
-            }
-            $this->Flash->error(__('ユーザ名もしくはパスワードが間違っています'));
+            $this->redirect(['controller'=>'Products','action'=>'managements']);
         }
     }
 
@@ -105,10 +91,10 @@ class UsersController extends AppController
                 }
                 $this->Flash->error(__('変更されませんでした。もう一度お試しください。'));
             }
-            $this->set(compact('user'));
+            $this->set(compact('user', 'current_user'));
         }catch(RecordNotFoundException $e){
             $this->Flash->error('ユーザが存在しません。');
-            $this->redirect(['controller'=>'Products','action'=>'index']);
+            $this->redirect(['controller'=>'Products','action'=>'managements']);
         }
     }
 

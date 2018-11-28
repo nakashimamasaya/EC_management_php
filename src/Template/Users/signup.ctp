@@ -5,7 +5,7 @@
 <div class="users form large-9 medium-8 columns content">
     <?= $this->Form->create($user) ?>
     <fieldset>
-        <legend>新規ユーザー作成</legend>
+        <legend>新規管理ユーザー作成</legend>
         <?php
             echo $this->Form->control('lastname', [
                 'label' => '氏名'
@@ -34,7 +34,7 @@
                 'label' => 'パスワード（確認）'
             ]);
             echo $this->Form->hidden('level', [
-                'value' => 0
+                'value' => 1
             ]);
         ?>
     </fieldset>
