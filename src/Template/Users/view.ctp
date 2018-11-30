@@ -5,7 +5,7 @@
  */
 ?>
 <div class="users view large-9 medium-8 columns content">
-    <h3><?= h($user->id) ?></h3>
+    <h3>ユーザー情報</h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Firstname') ?></th>
@@ -33,7 +33,13 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Level') ?></th>
-            <td><?= $this->Number->format($user->level) ?></td>
+                <?php if($user->level == 0): ?>
+                    <td>一般ユーザー</td>
+                <?php elseif($user->level == 1): ?>
+                    <td>出品ユーザー</td>
+                <?php else: ?>
+                    <td>adminユーザー</td>
+                <?php endif ?>
         </tr>
         
     </table>
