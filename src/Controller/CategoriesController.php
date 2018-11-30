@@ -27,8 +27,9 @@ class CategoriesController extends AppController
     public function index()
     {
         $categories = $this->paginate($this->Categories);
+        $current_user = $this->Auth->user();
 
-        $this->set(compact('categories'));
+        $this->set(compact('categories', 'current_user'));
     }
 
     public function add()
@@ -51,6 +52,8 @@ class CategoriesController extends AppController
         $category = $this->Categories->get($id, [
             'contain' => []
         ]);
+        $this->checkAdminUser();
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $category = $this->Categories->patchEntity($category, $this->request->getData());
             if ($this->Categories->save($category)) {
@@ -66,6 +69,7 @@ class CategoriesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+        $this->checkAdminUser();
         $category = $this->Categories->get($id);
         if ($this->Categories->delete($category)) {
             $this->Flash->success(__('削除しました。'));
@@ -74,5 +78,13 @@ class CategoriesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function checkAdminUser(){
+        $current_user = $this->Auth->user();
+        if($current_user['level'] != 2){
+            $this->Flash->error(__('権限がありません。'));
+            return $this->redirect(['action' => 'index']);
+        }
     }
 }

@@ -11,7 +11,7 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('purchaseDate') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('level') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('status') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
@@ -21,7 +21,13 @@
             <tr>
                 <td><?= $this->Number->format($purchase->id) ?></td>
                 <td><?= h($purchase->purchaseDate) ?></td>
-                <td><?= $this->Number->format($purchase->level) ?></td>
+                <?php if($purchase->level == 0): ?>
+                    <td>購入前</td>
+                <?php elseif($purchase->level == 1): ?>
+                    <td>購入済み</td>
+                <?php else: ?>
+                    <td>返金済み</td>
+                <?php endif ?>
                 <td><?= $purchase->has('user') ? $this->Html->link($purchase->user->id, ['controller' => 'Users', 'action' => 'view', $purchase->user->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('詳細'), ['action' => 'view', $purchase->id]) ?>

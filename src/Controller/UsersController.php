@@ -65,7 +65,7 @@ class UsersController extends AppController
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('ユーザーが作成されました。'));
 
-                return $this->redirect(['action' => 'login']);
+                return $this->redirect(['controller'=> 'Managements' , 'action' => 'login']);
             }
             $this->Flash->error(__('ユーザーの作成に失敗しました。'));
         }
