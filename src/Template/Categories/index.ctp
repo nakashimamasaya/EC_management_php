@@ -11,7 +11,9 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <?php if($current_user['level'] == 2): ?>
+                    <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <?php endif ?>
             </tr>
         </thead>
         <tbody>
@@ -19,10 +21,12 @@
             <tr>
                 <td><?= $this->Number->format($category->id) ?></td>
                 <td><?= h($category->name) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $category->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $category->id], ['confirm' => __('Are you sure you want to delete # {0}?', $category->id)]) ?>
-                </td>
+                <?php if($current_user['level'] == 2): ?>
+                    <td class="actions">
+                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $category->id]) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $category->id], ['confirm' => __('削除してよろしいですか？{0}?', $category->id)]) ?>
+                    </td>
+                <?php endif ?>
             </tr>
             <?php endforeach; ?>
         </tbody>
